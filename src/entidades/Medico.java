@@ -1,5 +1,7 @@
 package entidades;
 
+import servicos.Consulta;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +18,9 @@ public class Medico extends Pessoa {
     private static final Map<Integer, Medico> medicosPorCrm = new HashMap<>();
     private static final Map<String, Medico> medicosPorNome = new HashMap<>();
 
+    private static final Map<Medico, List<Integer>> medicoPorConsulta = new HashMap<>(); // medico -> idConsulta
+
+
 
     private Medico(String nome, String cpf, LocalDate dataNascimento, Integer crm, String especialidade) {
         super(nome, cpf, dataNascimento);
@@ -29,11 +34,21 @@ public class Medico extends Pessoa {
         medicosPorCpf.put(m.getCpf(), m);
         medicosPorCrm.put(m.getCrm(), m);
         medicosPorNome.put(m.getNome(), m);
+        medicoPorConsulta.put(m, new ArrayList<>());
     }
     @Override
     public String toString() {
         return super.toString() + "\nCRM: " + this.crm
                                 + "\nEspecialidade: " + this.especialidade;
+    }
+
+    public static void relacionarMedicoConsulta(Medico m, Integer idConsulta) {
+        if (m == null || Consulta.buscarConsultaPorId(idConsulta) == null) {
+            throw new IllegalArgumentException("Medico ou ID da consulta incorreto.");
+        }
+
+        medicoPorConsulta.putIfAbsent(m, new ArrayList<>()); // Evita nullPointer
+        medicoPorConsulta.get(m).add(idConsulta); // Adiciona o id da consulta ao objeto medico respectivo
     }
 
 
@@ -53,6 +68,7 @@ public class Medico extends Pessoa {
     public static List<Medico> buscarPorNome(String nome) {
         return new ArrayList<>(medicosPorNome.values());
     }
+
 
     public Integer getCrm() {
         return crm;

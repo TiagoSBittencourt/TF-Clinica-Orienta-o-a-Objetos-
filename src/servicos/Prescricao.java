@@ -52,7 +52,7 @@ public class Prescricao {
     }
 
     public static Prescricao buscarPrescricaoPorId(Integer idConsultaAssociada) {
-        return prescricaoPorId.get(idConsultaAssociada);
+        return prescricaoPorId.getOrDefault(idConsultaAssociada, null);
     }
 
     public void adicionarExame(String tipo, LocalDate dataPrescricao, LocalDate dataRealizacao, BigDecimal custo) {

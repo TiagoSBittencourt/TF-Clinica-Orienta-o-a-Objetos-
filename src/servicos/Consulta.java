@@ -57,17 +57,24 @@ public class Consulta {
     public static Consulta agendarConsulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m, Prescricao ps, BigDecimal valorConsulta) {
         Consulta c = new Consulta(data, horaInicio, duracaoMinutos, status, p, m, ps, valorConsulta);
         consultasPorId.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
+        relacionarConsultaMedicoEPaciente(c.getIdConsulta(), p, m); // Relaciona individualmente o paciente e o medico a consulta TODO: Testar
         return c;
     }
     public static Consulta agendarConsulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m) {
         Consulta c = new Consulta(data, horaInicio, duracaoMinutos, status, p, m);
         consultasPorId.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
+        relacionarConsultaMedicoEPaciente(c.getIdConsulta(), p, m); // Relaciona individualmente o paciente e o medico a consulta TODO: Testar
         return c;
+    }
+
+    private static void relacionarConsultaMedicoEPaciente(Integer idConsutlta, Paciente p, Medico m) {
+        Paciente.relacionarPacienteConsulta(p, idConsutlta);
+        Medico.relacionarMedicoConsulta(m, idConsutlta);
     }
 
     // Metodo para buscar consulta pelo id
     public static Consulta buscarConsultaPorId(Integer idConsulta) {
-        return consultasPorId.get(idConsulta);  // Retorna a consulta associada ao id
+        return consultasPorId.getOrDefault(idConsulta, null);  // Retorna a consulta associada ao id
     }
 
 

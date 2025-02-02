@@ -31,7 +31,7 @@ public class Exame {
         return e;
     }
     public static Exame buscarExamePorId(Integer idExame) {
-        return examesPorId.get(idExame);  // Retorna a consulta associada ao id
+        return examesPorId.getOrDefault(idExame, null);  // Retorna a consulta associada ao id
     }
 
     public String toString() {
