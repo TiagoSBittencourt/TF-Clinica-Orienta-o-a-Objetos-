@@ -6,12 +6,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Consulta {
 
     private static Integer totalConsultas = 0;
-    private static HashMap<Integer, Consulta> consultasMap = new HashMap<>(); // HashMap para armazenar as consultas com o idConsulta como chave
-    private Integer idConsulta;
+    private static Map<Integer, Consulta> consultasPorId = new HashMap<>(); // HashMap para armazenar as consultas com o idConsulta como chave
+    private final Integer idConsulta;
     private LocalDate data;
     private LocalTime horaInicio;
     private Integer duracaoMinutos;
@@ -28,6 +29,18 @@ public class Consulta {
     private BigDecimal valorConsulta;
 
     // Construtor privado
+    private Consulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m) {
+        this.idConsulta = totalConsultas++;
+        this.data = data;
+        this.horaInicio = horaInicio;
+        this.duracaoMinutos = duracaoMinutos;
+        this.status = status;
+        this.pacienteAssociado = p;
+        this.medicoAssociado = m;
+        this.prescricao = Prescricao.criarPrescricao(this.idConsulta);
+        this.valorConsulta = BigDecimal.valueOf(100);
+
+    }
     private Consulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m, Prescricao ps, BigDecimal valorConsulta) {
         this.idConsulta = totalConsultas++;
         this.data = data;
@@ -43,15 +56,32 @@ public class Consulta {
     // Metodo para agendar consulta
     public static Consulta agendarConsulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m, Prescricao ps, BigDecimal valorConsulta) {
         Consulta c = new Consulta(data, horaInicio, duracaoMinutos, status, p, m, ps, valorConsulta);
-        consultasMap.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
+        consultasPorId.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
+        return c;
+    }
+    public static Consulta agendarConsulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m) {
+        Consulta c = new Consulta(data, horaInicio, duracaoMinutos, status, p, m);
+        consultasPorId.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
         return c;
     }
 
     // Metodo para buscar consulta pelo id
     public static Consulta buscarConsultaPorId(Integer idConsulta) {
-        return consultasMap.get(idConsulta);  // Retorna a consulta associada ao id
+        return consultasPorId.get(idConsulta);  // Retorna a consulta associada ao id
     }
 
+
+    public String toString() {
+        return "\nID: " + this.idConsulta
+                + "\nData: " + this.data
+                + "\nHora: " + this.horaInicio
+                + "\nDuracao: " + this.duracaoMinutos
+                + "\nStatus: " + this.status
+                + "\nPaciente: " + this.pacienteAssociado.getNome()
+                + "\nMedico: " + this.medicoAssociado.getNome()
+                + "\nPrescricao: " + this.prescricao.toString()
+                + "\nValor: " + this.valorConsulta;
+    }
 
     public Integer getIdConsulta() {
         return idConsulta;
