@@ -52,6 +52,7 @@ public class Clinica {
             }
         }
         Paciente p = new Paciente(nomePaciente, cpfPaciente, dataNascimentoPaciente);
+
         p.displayDados();
     }
     public static void adicionarMedico() {
@@ -87,15 +88,12 @@ public class Clinica {
                 System.out.println("Formato invalido! Use o formato dd-mm-yyyy.");
             }
         }
-        Paciente p = new Paciente(nomeMedico, cpfMedico, dataNascimentoMedico);
-        p.displayDados();
+        System.out.println("Digite o crm: "); // TODO: Nao Liberar nomes em branco
+        Integer crmMedico = (Integer) sc.nextInt();
+        System.out.println("Digite o crm: "); // TODO: Nao Liberar nomes em branco
+        String especialidadeMedico = sc.nextLine();
+        Medico.adicionarMedico(nomeMedico, cpfMedico, dataNascimentoMedico, crmMedico, especialidadeMedico);
+        Medico.buscarPorCpf(cpfMedico).displayDados();
     }
 
-
-
-
-    public static void agendarConsulta(Integer idPaciente, Integer idMedico, LocalDate data, LocalTime hora, Integer duracao, Prescricao prescricao, BigDecimal valor ) {
-        int something = 10;
-
-    }
 }
