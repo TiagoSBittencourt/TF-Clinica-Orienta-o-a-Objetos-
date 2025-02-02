@@ -2,47 +2,42 @@ package entidades;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 class Pessoa {
-    protected Integer id;
+    private static final HashSet<String> cpfsRegistrados = new HashSet<>();
+    private static int contadorIds = 1;
+
+    private final Integer id;
+    private final String cpf;
     protected String nome;
-    protected String cpf;
     protected LocalDate dataNascimento;
     protected ArrayList<String> historicoMedico;
 
-    // Array de CPF registrado
-    private static ArrayList<String> cpfsRegistrados = new ArrayList<>();
-
-    // Contador de ID
-    private static Integer contadorIds = 1;
-
     public Pessoa(String nome, String cpf, LocalDate dataNascimento) {
-
-        // Verifica se o CPF já foi registrado
-        if (isCpfValido(cpf)) {
-            this.cpf = cpf;
-            cpfsRegistrados.add(cpf); // Adiciona o CPF à lista de registrados
-        } else {
-            System.out.println("CPF já registrado");
-            return; // Ou lançar uma exceção se preferir
+        if (!isCpfValido(cpf)) {
+            throw new IllegalArgumentException("CPF ja registrado");
         }
+
+        this.cpf = cpf;
+        cpfsRegistrados.add(cpf);
 
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.id = contadorIds++;  // ID unico para a instancia e aumenta o contatdor (+1) depois
+        this.id = contadorIds++;
         this.historicoMedico = new ArrayList<>();
     }
 
-    public void displayDados() {
-        System.out.println("ID: " + this.id);
-        System.out.println("Nome: " + this.nome);
-        System.out.println("CPF: " + this.cpf);
-        System.out.println("Data de nascimento: " + this.dataNascimento);
-        System.out.println("Historico Medico: " + this.historicoMedico);
+    @Override
+    public String toString() {
+        return  "\nID: " + this.id +
+                "\nNome: " + this.nome +
+                "\nCPF: " + this.cpf +
+                "\nData de nascimento: " + this.dataNascimento +
+                "\nHistporico Medico: " + this.historicoMedico;
     }
 
-    // Checa se o CPF ja esta registrado
-    private boolean isCpfValido(String cpf) {
+    public static boolean isCpfValido(String cpf) {
         return !cpfsRegistrados.contains(cpf);
     }
 
@@ -62,10 +57,6 @@ class Pessoa {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
@@ -82,7 +73,5 @@ class Pessoa {
         this.historicoMedico.add(historicoMedico);
     }
 
-    public void deletarHistoricoMedico(Integer i) {
-        historicoMedico.remove(i);
-    }
+
 }

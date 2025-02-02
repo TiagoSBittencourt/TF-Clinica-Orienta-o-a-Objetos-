@@ -8,14 +8,13 @@ import java.util.Map;
 
 public class Medico extends Pessoa {
     private static int proximoId = 0;
-    private Integer id;
     private Integer crm;
     private String especialidade;
 
     private static final Map<Integer, Medico> medicosPorId = new HashMap<>();
     private static final Map<String, Medico> medicosPorCpf = new HashMap<>();
     private static final Map<Integer, Medico> medicosPorCrm = new HashMap<>();
-    private static final List<Medico> medicosPorNome = new ArrayList<>();
+    private static final Map<String, Medico> medicosPorNome = new HashMap<>();
 
 
     private Medico(String nome, String cpf, LocalDate dataNascimento, Integer crm, String especialidade) {
@@ -25,13 +24,20 @@ public class Medico extends Pessoa {
     }
     public static void adicionarMedico(String nome, String cpf, LocalDate dataNascimento, Integer crm, String especialidade) {
         Medico m = new Medico(nome, cpf, dataNascimento, crm, especialidade);
-        m.setId(proximoId++); // ID unico
 
         medicosPorId.put(m.getId(), m);
         medicosPorCpf.put(m.getCpf(), m);
         medicosPorCrm.put(m.getCrm(), m);
-        medicosPorNome.add(m);
+        medicosPorNome.put(m.getNome(), m);
     }
+    @Override
+    public String toString() {
+        return super.toString() + "\nCRM: " + this.crm
+                                + "\nEspecialidade: " + this.especialidade;
+    }
+
+
+
     public static Medico buscarPorId(int id) {
         return medicosPorId.get(id);
     }
@@ -45,21 +51,7 @@ public class Medico extends Pessoa {
     }
     // TODO: Faca isso ser um pesquisa por semelhanca inicial
     public static List<Medico> buscarPorNome(String nome) {
-        List<Medico> resultado = new ArrayList<>();
-        for (Medico m : medicosPorNome) {
-            if (m.getNome().equalsIgnoreCase(nome)) {
-                resultado.add(m);
-            }
-        }
-        return resultado;
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
+        return new ArrayList<>(medicosPorNome.values());
     }
 
     public Integer getCrm() {

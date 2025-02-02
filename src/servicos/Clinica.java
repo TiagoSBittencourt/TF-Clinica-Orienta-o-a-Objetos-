@@ -18,7 +18,7 @@ public class Clinica {
 
     private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public static void adicionarPaciente() {
+    public static void interfaceAdicionarPaciente() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite o nome do paciente: "); // TODO: Nao Liberar nomes em branco
         String nomePaciente = sc.nextLine();
@@ -51,11 +51,11 @@ public class Clinica {
                 System.out.println("Formato invalido! Use o formato dd-mm-yyyy.");
             }
         }
-        Paciente p = new Paciente(nomePaciente, cpfPaciente, dataNascimentoPaciente);
+        Paciente.adicionarPaciente(nomePaciente, cpfPaciente, dataNascimentoPaciente);
 
-        p.displayDados();
+        System.out.println(Medico.buscarPorCpf(cpfPaciente).toString());
     }
-    public static void adicionarMedico() {
+    public static void interfaceAdicionarMedico() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite o nome do medico: "); // TODO: Nao Liberar nomes em branco
         String nomeMedico = sc.nextLine();
@@ -93,7 +93,7 @@ public class Clinica {
         System.out.println("Digite o crm: "); // TODO: Nao Liberar nomes em branco
         String especialidadeMedico = sc.nextLine();
         Medico.adicionarMedico(nomeMedico, cpfMedico, dataNascimentoMedico, crmMedico, especialidadeMedico);
-        Medico.buscarPorCpf(cpfMedico).displayDados();
+        System.out.println(Medico.buscarPorCpf(cpfMedico).toString());
     }
 
 }
