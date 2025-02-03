@@ -2,6 +2,7 @@ package entidades;
 
 import servicos.Consulta;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +18,11 @@ public class Paciente extends Pessoa {
 
     private static final Map<Paciente, List<Consulta>> consultaPorPaciente = new HashMap<>();
 
+    private BigDecimal extratoConsultas;
+
     private Paciente(String nome, String cpf, LocalDate dataNascimento) {
         super(nome, cpf, dataNascimento);
+        this.extratoConsultas = BigDecimal.ZERO;
     }
     public static void adicionarPaciente(String nome, String cpf, LocalDate dataNascimento) {
         Paciente p = new Paciente(nome, cpf, dataNascimento);
@@ -33,6 +37,12 @@ public class Paciente extends Pessoa {
             throw new IllegalArgumentException("Paciente ou ID da consulta incorreto");
         }
 
+        if (p.getExtratoConsultas().compareTo(BigDecimal.ZERO)>= 0) {
+            p.adicionarAoExtrato(c.getValorConsulta()); // Adiciona o valor da Consulta ao Extrato do Paciente
+        }
+        else {
+            throw new IllegalArgumentException("Paciente endividado");
+        }
         consultaPorPaciente.putIfAbsent(p, new ArrayList<>()); // Garante lista inicial
         consultaPorPaciente.get(p).add(c); // Adiciona o id da consulta ao objeto paciente respectivo
     }
@@ -47,6 +57,12 @@ public class Paciente extends Pessoa {
         return false;
     }
 
+    public BigDecimal getExtratoConsultas() {
+        return extratoConsultas;
+    }
+    public void adicionarAoExtrato(BigDecimal valor) {
+        this.extratoConsultas = this.extratoConsultas.add(valor);
+    }
     public static Paciente buscarPorId(int id) {
         return pacientesPorId.getOrDefault(id, null);
     }
