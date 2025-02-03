@@ -18,7 +18,7 @@ public class Medico extends Pessoa {
     private static final Map<Integer, Medico> medicosPorCrm = new HashMap<>();
     private static final Map<String, Medico> medicosPorNome = new HashMap<>();
 
-    private static final Map<Medico, List<Integer>> medicoPorConsulta = new HashMap<>(); // medico -> idConsulta
+    private static final Map<Medico, List<Consulta>> medicoPorConsulta = new HashMap<>(); // medico -> idConsulta
 
 
 
@@ -42,13 +42,13 @@ public class Medico extends Pessoa {
                                 + "\nEspecialidade: " + this.especialidade;
     }
 
-    public static void relacionarMedicoConsulta(Medico m, Integer idConsulta) {
-        if (m == null || Consulta.buscarConsultaPorId(idConsulta) == null) {
+    public static void relacionarMedicoConsulta(Medico m, Consulta c) {
+        if (m == null || c == null) {
             throw new IllegalArgumentException("Medico ou ID da consulta incorreto.");
         }
 
         medicoPorConsulta.putIfAbsent(m, new ArrayList<>()); // Evita nullPointer
-        medicoPorConsulta.get(m).add(idConsulta); // Adiciona o id da consulta ao objeto medico respectivo
+        medicoPorConsulta.get(m).add(c); // Adiciona o id da consulta ao objeto medico respectivo
     }
 
 

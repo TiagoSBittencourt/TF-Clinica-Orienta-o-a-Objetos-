@@ -15,7 +15,7 @@ public class Paciente extends Pessoa {
     private static final Map<String, Paciente> pacientesPorCpf = new HashMap<>();
     private static final Map<String, Paciente> pacientesPorNome = new HashMap<>();
 
-    private static final Map<Paciente, List<Integer>> consultaPorPaciente = new HashMap<>();
+    private static final Map<Paciente, List<Consulta>> consultaPorPaciente = new HashMap<>();
 
     private Paciente(String nome, String cpf, LocalDate dataNascimento) {
         super(nome, cpf, dataNascimento);
@@ -28,13 +28,13 @@ public class Paciente extends Pessoa {
         pacientesPorNome.put(p.getNome(), p);
     }
 
-    public static void relacionarPacienteConsulta(Paciente p, Integer idConsulta) {
-        if (p == null || Consulta.buscarConsultaPorId(idConsulta) == null) {
+    public static void relacionarPacienteConsulta(Paciente p, Consulta c) {
+        if (p == null || c == null) {
             throw new IllegalArgumentException("Paciente ou ID da consulta incorreto");
         }
 
         consultaPorPaciente.putIfAbsent(p, new ArrayList<>()); // Garante lista inicial
-        consultaPorPaciente.get(p).add(idConsulta); // Adiciona o id da consulta ao objeto paciente respectivo
+        consultaPorPaciente.get(p).add(c); // Adiciona o id da consulta ao objeto paciente respectivo
     }
 
     public static Paciente buscarPorId(int id) {
