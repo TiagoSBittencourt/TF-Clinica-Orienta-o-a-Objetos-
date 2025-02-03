@@ -1,5 +1,7 @@
 package entidades;
 
+import servicos.Consulta;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,7 +14,7 @@ class Pessoa {
     private final String cpf;
     protected String nome;
     protected LocalDate dataNascimento;
-    protected ArrayList<String> historicoMedico;
+    protected ArrayList<Consulta> historicoMedico;
 
     public Pessoa(String nome, String cpf, LocalDate dataNascimento) {
         if (!isCpfValido(cpf)) {
@@ -65,11 +67,11 @@ class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
-    public ArrayList<String> getHistoricoMedico() {
+    public ArrayList<Consulta> getHistoricoMedico() {
         return historicoMedico;
     }
 
-    public void adicionaHistoricoMedico(String historicoMedico) {
+    public void adicionaHistoricoMedico(Consulta historicoMedico) {
         this.historicoMedico.add(historicoMedico);
     }
 
