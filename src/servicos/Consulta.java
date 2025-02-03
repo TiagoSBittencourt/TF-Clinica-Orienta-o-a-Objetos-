@@ -61,6 +61,9 @@ public class Consulta {
         return c;
     }
     public static Consulta agendarConsulta(LocalDate data, LocalTime horaInicio, Integer duracaoMinutos, StatusConsulta status, Paciente p, Medico m) {
+        if (p.ifConsultaNoDia(data)) {
+            throw new IllegalArgumentException("Paciente ja possui consulta no dia");
+        }
         Consulta c = new Consulta(data, horaInicio, duracaoMinutos, status, p, m);
         consultasPorId.put(c.getIdConsulta(), c);  // Adiciona a consulta ao HashMap
         relacionarConsultaMedicoEPaciente(c, p, m); // Relaciona individualmente o paciente e o medico a consulta TODO: Testar

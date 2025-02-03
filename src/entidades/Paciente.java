@@ -37,6 +37,16 @@ public class Paciente extends Pessoa {
         consultaPorPaciente.get(p).add(c); // Adiciona o id da consulta ao objeto paciente respectivo
     }
 
+    public Boolean ifConsultaNoDia(LocalDate data) {
+        List<Consulta> consultas = consultaPorPaciente.getOrDefault(this, new ArrayList<Consulta>());
+        for (Consulta consulta : consultas) {
+            if (consulta.getData().equals(data)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Paciente buscarPorId(int id) {
         return pacientesPorId.getOrDefault(id, null);
     }
