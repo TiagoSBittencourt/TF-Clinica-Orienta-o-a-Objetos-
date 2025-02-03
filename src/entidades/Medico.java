@@ -18,7 +18,7 @@ public class Medico extends Pessoa {
     private static final Map<Integer, Medico> medicosPorCrm = new HashMap<>();
     private static final Map<String, Medico> medicosPorNome = new HashMap<>();
 
-    private static final Map<Medico, List<Consulta>> medicoPorConsulta = new HashMap<>(); // medico -> idConsulta
+    private static final Map<Medico, List<Consulta>> consultaPormedico = new HashMap<>(); // medico -> idConsulta
 
 
 
@@ -34,7 +34,7 @@ public class Medico extends Pessoa {
         medicosPorCpf.put(m.getCpf(), m);
         medicosPorCrm.put(m.getCrm(), m);
         medicosPorNome.put(m.getNome(), m);
-        medicoPorConsulta.put(m, new ArrayList<>());
+        consultaPormedico.put(m, new ArrayList<>());
     }
     @Override
     public String toString() {
@@ -46,39 +46,52 @@ public class Medico extends Pessoa {
         if (m == null || c == null) {
             throw new IllegalArgumentException("Medico ou ID da consulta incorreto.");
         }
+        if (c.getMedicoAssociado() != null) {
+            throw  new IllegalArgumentException("Consulta ja possui medico relacionado");
+        }
+        if (c.getPacienteAssociado() != null) {
+            throw new IllegalArgumentException("Consulta ja possui paciente relacionado");
+        }
 
-        medicoPorConsulta.putIfAbsent(m, new ArrayList<>()); // Evita nullPointer
-        medicoPorConsulta.get(m).add(c); // Adiciona o id da consulta ao objeto medico respectivo
+        consultaPormedico.putIfAbsent(m, new ArrayList<>()); // Evita nullPointer
+        consultaPormedico.get(m).add(c); // Adiciona o id da consulta ao objeto medico respectivo
     }
 
 
 
     public static Medico buscarPorId(int id) {
-        return medicosPorId.get(id);
+        return medicosPorId.getOrDefault(id, null);
     }
 
     public static Medico buscarPorCpf(String cpf) {
-        return medicosPorCpf.get(cpf);
+        return medicosPorCpf.getOrDefault(cpf, null);
     }
 
     public static Medico buscarPorCrm(int crm) {
-        return medicosPorCrm.get(crm);
+        return medicosPorCrm.getOrDefault(crm, null);
     }
-    // TODO: Faca isso ser um pesquisa por semelhanca inicial
+
     public static List<Medico> buscarPorNome(String nome) {
-        return new ArrayList<>(medicosPorNome.values());
+        List<Medico> resultado = new ArrayList<>();
+
+        for (String key : medicosPorNome.keySet()) {
+            if (key.toLowerCase().startsWith(nome.toLowerCase())) {
+                resultado.add(medicosPorNome.get(key));
+            }
+        }
+        return resultado;
     }
 
 
     public Integer getCrm() {
-        return crm;
+        return this.crm;
     }
-    public void setCrm(Integer crm) {
+    public void setCrm(int crm) {
         this.crm = crm;
     }
 
     public String getEspecialidade() {
-        return especialidade;
+        return this.especialidade;
     }
     public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
