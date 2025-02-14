@@ -1,15 +1,9 @@
 import entidades.*;
 import servicos.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import static servicos.Consulta.StatusConsulta.AGENDADA;
-
 public class Main {
     public static void main(String[] args) {
         // Testar Interface JoptionPane
-        Clinica.exibirMenuPrincipal();
         System.out.println(Medico.getMedicos());
         System.out.println(Paciente.getPacientes());
 

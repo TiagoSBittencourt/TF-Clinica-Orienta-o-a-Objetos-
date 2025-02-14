@@ -47,12 +47,7 @@ public class Medico extends Pessoa implements MedicoInterface{
         if (m == null || c == null) {
             throw new IllegalArgumentException("Medico ou ID da consulta incorreto.");
         }
-        if (c.getMedicoAssociado() != null) {
-            throw  new IllegalArgumentException("Consulta ja possui medico relacionado");
-        }
-        if (c.getPacienteAssociado() != null) {
-            throw new IllegalArgumentException("Consulta ja possui paciente relacionado");
-        }
+
 
         consultaPormedico.putIfAbsent(m, new ArrayList<>()); // Evita nullPointer
         consultaPormedico.get(m).add(c); // Adiciona o id da consulta ao objeto medico respectivo

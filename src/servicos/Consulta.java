@@ -19,6 +19,8 @@ public class Consulta {
     private LocalTime horaInicio;
     private Integer duracaoMinutos;
 
+
+
     // Restringe Possibilidades de status
     public enum StatusConsulta {
         AGENDADA, REALIZADA, CANCELADA, PENDENTE;
@@ -121,6 +123,14 @@ public class Consulta {
 
     public Paciente getPacienteAssociado() {
         return pacienteAssociado;
+    }
+
+    public void setValor(BigDecimal valorConsulta) {
+        this.valorConsulta = valorConsulta;
+    }
+
+    public void setPrescricao(Prescricao prescricao) {
+        this.prescricao = prescricao;
     }
 
     public Medico getMedicoAssociado() {
