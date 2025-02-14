@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-class Pessoa {
+class Pessoa implements PessoaInterface{
     private static final HashSet<String> cpfsRegistrados = new HashSet<>();
     private static int contadorIds = 1;
 

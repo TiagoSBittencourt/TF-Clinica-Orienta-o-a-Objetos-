@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Paciente extends Pessoa {
+public class Paciente extends Pessoa implements PacienteInterface{
     private static int proximoId = 0;
 
     private static final Map<Integer, Paciente> pacientesPorId = new HashMap<>();

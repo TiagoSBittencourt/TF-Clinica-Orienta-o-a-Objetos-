@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Medico extends Pessoa {
+public class Medico extends Pessoa implements MedicoInterface{
     private static int proximoId = 0;
     private Integer crm;
     private String especialidade;
@@ -18,7 +18,7 @@ public class Medico extends Pessoa {
     private static final Map<Integer, Medico> medicosPorCrm = new HashMap<>();
     private static final Map<String, Medico> medicosPorNome = new HashMap<>();
 
-    private static final Map<Medico, List<Consulta>> consultaPormedico = new HashMap<>(); // medico -> idConsulta
+    private static final Map<Medico, List<Consulta>> consultaPormedico = new HashMap<>(); // medico -> Consulta
 
 
 
@@ -41,6 +41,7 @@ public class Medico extends Pessoa {
         return super.toString() + "\nCRM: " + this.crm
                                 + "\nEspecialidade: " + this.especialidade;
     }
+
 
     public static void relacionarMedicoConsulta(Medico m, Consulta c) {
         if (m == null || c == null) {
