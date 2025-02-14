@@ -3,97 +3,119 @@ package servicos;
 import entidades.Medico;
 import entidades.Paciente;
 
-import java.math.BigDecimal;
+import javax.swing.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Clinica {
-    private ArrayList<Paciente> paciente;
-    private ArrayList<Medico> medicos;
-
     private static final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public static void interfaceAdicionarPaciente() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o nome do paciente: "); // TODO: Nao Liberar nomes em branco
-        String nomePaciente = sc.nextLine();
-        System.out.println("Digite o cpf: "); // TODO: Aplicar um formatador (cpf)
-        String cpfPaciente = sc.nextLine();
-        Boolean exit = false;
-        while (!Paciente.isCpfValido(cpfPaciente)) {
-            System.out.println("Cpf ja cadastrado! Digite (s) para sair ou entre ou cpf valido");
-            cpfPaciente = sc.nextLine();
-            if (cpfPaciente.equalsIgnoreCase("s")) {
-                return;
+    public static void exibirMenuPrincipal() {
+        Object[] opcoes = {"Nova Pessoa", "Nova Consulta", "Sair"};
+        while (true) {
+            int escolha = JOptionPane.showOptionDialog(null, "Escolha uma opção:", "Clínica",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+
+            if (escolha == 0) {
+                adicionarEntidade();
+            } else if (escolha == 1) {
+                adicionarConsulta();
+            } else {
+                break;
             }
         }
+    }
+
+    public static void adicionarEntidade() {
+        Object[] opcoes = {"Adicionar Paciente", "Adicionar Médico", "Voltar"};
+        while (true) {
+            int escolha = JOptionPane.showOptionDialog(null, "Escolha uma opção:", "Adicionar Pessoa",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+
+            if (escolha == 0) {
+                interfaceAdicionarPaciente();
+            } else if (escolha == 1) {
+                interfaceAdicionarMedico();
+            } else {
+                break;
+            }
+        }
+    }
+
+    public static void adicionarConsulta() {
+        JOptionPane.showMessageDialog(null, "Funcionalidade de consulta ainda em desenvolvimento.");
+    }
+
+    public static void interfaceAdicionarPaciente() {
+        String nomePaciente;
+        do {
+            nomePaciente = JOptionPane.showInputDialog("Digite o nome do paciente:");
+        } while (nomePaciente == null || nomePaciente.trim().isEmpty());
+
+        String cpfPaciente;
+        do {
+            cpfPaciente = JOptionPane.showInputDialog("Digite o CPF do paciente:");
+            if (!Paciente.isCpfValido(cpfPaciente)) {
+                int opcao = JOptionPane.showConfirmDialog(null, "CPF já cadastrado! Deseja sair?", "Erro", JOptionPane.YES_NO_OPTION);
+                if (opcao == JOptionPane.YES_OPTION) return;
+            }
+        } while (!Paciente.isCpfValido(cpfPaciente));
 
         LocalDate dataNascimentoPaciente = null;
         while (dataNascimentoPaciente == null) {
             try {
-                System.out.print("Digite a data de nascimento no formato (dd-mm-yyyy): ");
-                String input = sc.nextLine();
-
-                // Tenta converter a string para LocalDate
+                String input = JOptionPane.showInputDialog("Digite a data de nascimento (dd-MM-yyyy):");
                 dataNascimentoPaciente = LocalDate.parse(input, formato);
-
-                // Checa se a data nao esta no futuro
                 if (dataNascimentoPaciente.isAfter(LocalDate.now())) {
-                    System.out.println("A data de nascimento nao pode estar no futuro.");
+                    JOptionPane.showMessageDialog(null, "A data de nascimento não pode estar no futuro.");
                     dataNascimentoPaciente = null;
                 }
             } catch (DateTimeParseException e) {
-                System.out.println("Formato invalido! Use o formato dd-mm-yyyy.");
+                JOptionPane.showMessageDialog(null, "Formato inválido! Use dd-MM-yyyy.");
             }
         }
-        Paciente.adicionarPaciente(nomePaciente, cpfPaciente, dataNascimentoPaciente);
 
-        System.out.println(Medico.buscarPorCpf(cpfPaciente).toString());
+        Paciente.adicionarPaciente(nomePaciente, cpfPaciente, dataNascimentoPaciente);
+        JOptionPane.showMessageDialog(null, "Paciente cadastrado com sucesso!");
     }
+
     public static void interfaceAdicionarMedico() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o nome do medico: "); // TODO: Nao Liberar nomes em branco
-        String nomeMedico = sc.nextLine();
-        System.out.println("Digite o cpf: "); // TODO: Aplicar um formatador (cpf)
-        String cpfMedico = sc.nextLine();
-        Boolean exit = false;
-        while (!Paciente.isCpfValido(cpfMedico)) {
-            System.out.println("Cpf ja cadastrado! Digite (s) para sair ou entre ou cpf valido");
-            cpfMedico = sc.nextLine();
-            if (cpfMedico.equalsIgnoreCase("s")) {
-                return;
+        String nomeMedico;
+        do {
+            nomeMedico = JOptionPane.showInputDialog("Digite o nome do médico:");
+        } while (nomeMedico == null || nomeMedico.trim().isEmpty());
+
+        String cpfMedico;
+        do {
+            cpfMedico = JOptionPane.showInputDialog("Digite o CPF do médico:");
+            if (!Paciente.isCpfValido(cpfMedico)) {
+                int opcao = JOptionPane.showConfirmDialog(null, "CPF já cadastrado! Deseja sair?", "Erro", JOptionPane.YES_NO_OPTION);
+                if (opcao == JOptionPane.YES_OPTION) return;
             }
-        }
+        } while (!Paciente.isCpfValido(cpfMedico));
 
         LocalDate dataNascimentoMedico = null;
         while (dataNascimentoMedico == null) {
             try {
-                System.out.print("Digite a data de nascimento no formato (dd-mm-yyyy): ");
-                String input = sc.nextLine();
-
-                // Tenta converter a string para LocalDate
+                String input = JOptionPane.showInputDialog("Digite a data de nascimento (dd-MM-yyyy):");
                 dataNascimentoMedico = LocalDate.parse(input, formato);
-
-                // Checa se a data nao esta no futuro
                 if (dataNascimentoMedico.isAfter(LocalDate.now())) {
-                    System.out.println("A data de nascimento nao pode estar no futuro.");
+                    JOptionPane.showMessageDialog(null, "A data de nascimento não pode estar no futuro.");
                     dataNascimentoMedico = null;
                 }
             } catch (DateTimeParseException e) {
-                System.out.println("Formato invalido! Use o formato dd-mm-yyyy.");
+                JOptionPane.showMessageDialog(null, "Formato inválido! Use dd-MM-yyyy.");
             }
         }
-        System.out.println("Digite o crm: "); // TODO: Nao Liberar nomes em branco
-        Integer crmMedico = (Integer) sc.nextInt();
-        System.out.println("Digite o crm: "); // TODO: Nao Liberar nomes em branco
-        String especialidadeMedico = sc.nextLine();
-        Medico.adicionarMedico(nomeMedico, cpfMedico, dataNascimentoMedico, crmMedico, especialidadeMedico);
-        System.out.println(Medico.buscarPorCpf(cpfMedico).toString());
-    }
 
+        String crmMedico = JOptionPane.showInputDialog("Digite o CRM do médico:");
+        String especialidadeMedico;
+        do {
+            especialidadeMedico = JOptionPane.showInputDialog("Digite a especialidade do médico:");
+        } while (especialidadeMedico == null || especialidadeMedico.trim().isEmpty());
+
+        Medico.adicionarMedico(nomeMedico, cpfMedico, dataNascimentoMedico, Integer.parseInt(crmMedico), especialidadeMedico);
+        JOptionPane.showMessageDialog(null, "Médico cadastrado com sucesso!");
+    }
 }
