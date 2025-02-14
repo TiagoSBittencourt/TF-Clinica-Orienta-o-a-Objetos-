@@ -83,6 +83,10 @@ public class Medico extends Pessoa implements MedicoInterface{
         return resultado;
     }
 
+    public static List<Medico> getMedicos() {
+        return new ArrayList<>(medicosPorId.values());
+    }
+
 
     public Integer getCrm() {
         return this.crm;

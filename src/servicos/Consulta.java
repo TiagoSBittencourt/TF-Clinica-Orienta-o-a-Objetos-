@@ -5,7 +5,9 @@ import entidades.Paciente;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Consulta {
@@ -91,6 +93,10 @@ public class Consulta {
                 + "\nMedico: " + this.medicoAssociado.getNome()
                 + "\nPrescricao: " + this.prescricao.toString()
                 + "\nValor: " + this.valorConsulta;
+    }
+
+    public static List<Consulta> getConsultas() {
+        return new ArrayList<>(consultasPorId.values());
     }
 
     public Integer getIdConsulta() {

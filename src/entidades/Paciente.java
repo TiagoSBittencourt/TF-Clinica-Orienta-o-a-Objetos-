@@ -56,6 +56,9 @@ public class Paciente extends Pessoa implements PacienteInterface{
         }
         return false;
     }
+    public static List<Paciente> getPacientes() {
+        return new ArrayList<>(pacientesPorId.values());
+    }
 
     public BigDecimal getExtratoConsultas() {
         return extratoConsultas;

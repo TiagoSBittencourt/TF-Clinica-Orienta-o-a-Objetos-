@@ -10,6 +10,10 @@ public class Main {
     public static void main(String[] args) {
         // Testar Interface JoptionPane
         Clinica.exibirMenuPrincipal();
+        System.out.println(Medico.getMedicos());
+        System.out.println(Paciente.getPacientes());
+
+        System.out.println(Consulta.getConsultas());
 
         //Clinica.interfaceAdicionarPaciente();
         //Clinica.interfaceAdicionarMedico();
