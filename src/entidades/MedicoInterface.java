@@ -9,7 +9,5 @@ public interface MedicoInterface {
     void setCrm(int crm);
     String getEspecialidade();
     void setEspecialidade(String especialidade);
-    void adicionarConsulta(Consulta consulta);
-    List<Consulta> getConsultas();
 
 }
